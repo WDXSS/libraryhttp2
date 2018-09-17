@@ -48,6 +48,7 @@ public class RetrofitTest {
         String password = MD5.md5Lower("123456");
         System.out.println("password = " + password);
         TestService service = mRetrofit.create(TestService.class);
+        //此处的call 为OkHttpCall
         Call<User> call = service.postLogin(name, password);
         call.enqueue(new Callback<User>() {
             @Override
