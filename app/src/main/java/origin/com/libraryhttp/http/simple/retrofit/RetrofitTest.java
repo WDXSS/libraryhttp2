@@ -18,8 +18,9 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 /**
- * retrofit 学习，最基础的
- * 测试接口可以在 “玩android” 中找
+ * retrofit 学习，最基础的<br/>
+ * 测试接口可以在 “玩android” 中找 <br/>
+ * <img  src="https://upload-images.jianshu.io/upload_images/944365-ee747d1e331ed5a4.png?imageMogr2/auto-orient/" ></img> <br/>
  * Created by zc on 2018/9/14
  */
 public class RetrofitTest {
@@ -27,6 +28,7 @@ public class RetrofitTest {
     private Retrofit mRetrofit;
 
     private void initRetrofit() {
+        // 根据返回数据的格式和数据解析方式（Json、XML等）定义
         String url = "https://zm.gaiay.net.cn/";
         Retrofit.Builder builder = new Retrofit.Builder();
         builder.baseUrl(url);//设置baseUrl
@@ -126,14 +128,10 @@ public class RetrofitTest {
         public String getUserName() {
             return userName;
         }
-
         public void setUserName(String userName) {
             this.userName = userName;
         }
-
         public String userName;
-
-
     }
 
 }
