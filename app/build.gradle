@@ -28,4 +28,8 @@ dependencies {
 
     implementation 'com.squareup.retrofit2:retrofit:2.4.0'//导入retrofit
     implementation 'com.squareup.retrofit2:converter-gson:2.3.0'//gson库
+
+    implementation 'io.reactivex.rxjava2:rxjava:2.1.7'//rxjava
+    implementation 'com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0'// retrofit 和 rxjava 关联 (如：RxJava2CallAdapterFactory)
+
 }

@@ -2,9 +2,17 @@ package origin.com.libraryhttp.http.simple.retrofit;
 
 import android.util.Log;
 
-import java.io.IOException;
-import java.util.Objects;
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -42,7 +50,8 @@ public class RetrofitTest {
 
 //        test.test();
 //        test.testJson();
-        test.placeholder();
+//        test.placeholder();
+        test.rxjavaTest();
     }
 
     public void test() {
@@ -55,7 +64,9 @@ public class RetrofitTest {
         call.enqueue(new Callback<User>() {
             @Override
             public void onResponse(Call<User> call, Response<User> response) {
-                System.out.println("onResponse: " + ((User) Objects.requireNonNull(response.body())).userName);
+                User user = response.body();
+                assert user != null;
+                System.out.println("onResponse: " + user.userName);
             }
 
             @Override
@@ -66,6 +77,7 @@ public class RetrofitTest {
     }
 
     private void testJson() {
+        //自己定义解析类
         TestService service = mRetrofit.create(TestService.class);
         String name = "13699167136";
         String password = MD5.md5Lower("123456");
@@ -75,8 +87,16 @@ public class RetrofitTest {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 try {
-                    //得到json
+                    //得到的json
                     System.out.println("onResponse ----json : " + response.body().string());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                try {
+                    JSONObject jsonObject = new JSONObject(response.body().string());
+                    jsonObject.getString("name");
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -122,6 +142,12 @@ public class RetrofitTest {
         @GET("http://www.wanandroid.com/article/list/{page}/json")
         //测试占位符 {page}当做占位符，而实际运行中会通过@PATH("page")所标注的参数进行替换
         Call<ResponseBody> getPlaceholder(@Path("page") int page);
+
+
+
+        @GET("http://www.wanandroid.com/article/list/{page}/json")
+            //测试占位符 {page}当做占位符，而实际运行中会通过@PATH("page")所标注的参数进行替换
+        Observable<Object> getRxjava(@Path("page") int page);
     }
 
     class User {
@@ -132,6 +158,44 @@ public class RetrofitTest {
             this.userName = userName;
         }
         public String userName;
+    }
+
+
+
+    private void rxjavaTest(){
+
+        String url = "https://zm.gaiay.net.cn/";
+        Retrofit.Builder builder = new Retrofit.Builder();
+        builder.baseUrl(url);//设置baseUrl
+        builder.addConverterFactory(GsonConverterFactory.create());//添加解析 Gson，最终实现自定义
+        builder.addCallAdapterFactory(RxJava2CallAdapterFactory.create());
+
+        Retrofit retrofit  = builder.build();
+
+        TestService service = retrofit.create(TestService.class);
+
+        service.getRxjava(0).subscribeOn(Schedulers.io())
+//                .observeOn()
+                .subscribe(new Observer<Object>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        System.out.println("onSubscribe");
+                    }
+                    @Override
+                    public void onNext(Object o) {
+                        System.out.println("onNext");
+                        System.out.println(o.toString());
+                    }
+                    @Override
+                    public void onError(Throwable e) {
+                        System.out.println("onError");
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        System.out.println("onComplete");
+                    }
+                });
     }
 
 }

@@ -221,11 +221,11 @@ public class OkHttpTest {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-//                ResponseBody body = response.body();
-//                if (body != null) {
-//                    System.out.println("onResponse: " + response.body().string());
-//                    body.close();
-//                }
+                ResponseBody body = response.body();
+                if (body != null) {
+                    System.out.println("onResponse: " + response.body().string());
+                    body.close();
+                }
             }
         });
     }
