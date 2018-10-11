@@ -49,9 +49,9 @@ public class RetrofitTest {
         test.initRetrofit();
 
 //        test.test();
-//        test.testJson();
+        test.testJson();
 //        test.placeholder();
-        test.rxjavaTest();
+//        test.rxjavaTest();
     }
 
     public void test() {
