@@ -29,7 +29,8 @@ public class StringTest {
         System.out.println("hasCode s1= "+ s1.hashCode());//hashCode 相同，
         System.out.println("hasCode s2= "+ s2.hashCode());
         System.out.println("equals = "+ s2.equals(s1) );//结果：true ：原因--s1和s2 是不同的对象，因为String重写了 equals();比较的是真实的值
-        System.out.println("== "+ (s1 == s2 ));//结果：false;
+        System.out.println("equals intern = "+ s2.intern() == s1);//结果：false
+        System.out.println("new String 时 == "+ (s1 == s2 ));//结果：false;
 
         StringTest test = new StringTest();
         Cat cat1 = test.new Cat(1);
