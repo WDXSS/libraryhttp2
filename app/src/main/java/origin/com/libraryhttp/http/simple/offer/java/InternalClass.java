@@ -1,4 +1,4 @@
-package origin.com.libraryhttp.http.simple.offer;
+package origin.com.libraryhttp.http.simple.offer.java;
 
 /**
  * 内部类：1.种类

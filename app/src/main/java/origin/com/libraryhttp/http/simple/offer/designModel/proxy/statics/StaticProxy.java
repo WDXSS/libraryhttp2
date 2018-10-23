@@ -1,4 +1,4 @@
-package origin.com.libraryhttp.http.simple.offer.proxy.statics;
+package origin.com.libraryhttp.http.simple.offer.designModel.proxy.statics;
 
 /**
  * 静态代理

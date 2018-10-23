@@ -1,4 +1,4 @@
-package origin.com.libraryhttp.http.simple.algorithm;
+package origin.com.libraryhttp.http.simple.offer.algorithm;
 
 /**
  * 算法学习
@@ -76,7 +76,7 @@ public class AlgorithmJava {
 
     /**
      * 测试步骤1.和2.交换位置出现的问题
-     *
+     * 复位时会出现，找到的数值比 temp大
      * @param left
      * @param right
      */
@@ -126,21 +126,6 @@ public class AlgorithmJava {
      * 3.比较两相邻的数 A[j] 和 A[j+1]
      * 4.交换位置
      */
-    private void bubbleSort() {
-        printQuickA("");
-        System.out.println("开始排序");
-        for (int i = 0; i < bubbleA.length - 1; i++) {//外层循环控制排序趟数
-            for (int j = 0; j < bubbleA.length - 1 - i; j++) {//内层循环控制每一趟排序多少次
-                if (bubbleA[j] > bubbleA[j + 1]) {
-                    int temp = bubbleA[j];
-                    bubbleA[j] = bubbleA[j + 1];
-                    bubbleA[j + 1] = temp;
-                    printBubbleA("交换后 ");
-                }
-            }
-        }
-    }
-
     private void bubbleSortB() {
         printQuickA("");
         System.out.println("开始排序");
@@ -164,9 +149,6 @@ public class AlgorithmJava {
      */
     private void printQuickA(String name) {
         System.out.println(name + "--" + "");
-//        for (int i = 0; i < bubbleA.length; i++) {
-//            System.out.print(bubbleA[i] + ",");
-//        }
         for (int i = 0; i < quickSortA.length; i++) {
             System.out.print(quickSortA[i] + ",");
         }

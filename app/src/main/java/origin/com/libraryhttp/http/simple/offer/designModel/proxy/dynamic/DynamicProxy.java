@@ -1,6 +1,4 @@
-package origin.com.libraryhttp.http.simple.offer.proxy.dynamic;
-
-import java.lang.reflect.InvocationHandler;
+package origin.com.libraryhttp.http.simple.offer.designModel.proxy.dynamic;
 
 /**
  * 动态代理

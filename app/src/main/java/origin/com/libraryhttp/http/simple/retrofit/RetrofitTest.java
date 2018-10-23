@@ -1,17 +1,17 @@
 package origin.com.libraryhttp.http.simple.retrofit;
 
 import android.util.Log;
-
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
+import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -49,9 +49,10 @@ public class RetrofitTest {
         test.initRetrofit();
 
 //        test.test();
-        test.testJson();
+//        test.testJson();
 //        test.placeholder();
 //        test.rxjavaTest();
+        test.testRxjava();
     }
 
     public void test() {
@@ -83,6 +84,7 @@ public class RetrofitTest {
         String password = MD5.md5Lower("123456");
         System.out.println("password = " + password);
         Call<ResponseBody> call = service.postLoginJson(name, password);
+        //Retrofit默认的Call 为ExecutorCallAdapterFactory 的 ExecutorCallbackCall
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
@@ -130,7 +132,7 @@ public class RetrofitTest {
             }
         });
     }
-    interface TestService {
+    public interface TestService {
         @FormUrlEncoded
         @POST("/api/zm/w/account/postLogin")
         Call<User> postLogin(@Field("username") String name, @Field("password") String password);
@@ -148,7 +150,11 @@ public class RetrofitTest {
         @GET("http://www.wanandroid.com/article/list/{page}/json")
             //测试占位符 {page}当做占位符，而实际运行中会通过@PATH("page")所标注的参数进行替换
         Observable<Object> getRxjava(@Path("page") int page);
+
+        @GET("xiaohua.json")
+        Observable<List<Book>> getData();
     }
+
 
     class User {
         public String getUserName() {
@@ -159,43 +165,110 @@ public class RetrofitTest {
         }
         public String userName;
     }
+    public class Book{
+        String title;
+        String content;
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public String getContent() {
+            return content;
+        }
+
+        public void setContent(String content) {
+            this.content = content;
+        }
+    }
 
 
+//    private void rxjavaTest(){
+//
+//        String url = "https://zm.gaiay.net.cn/";
+//        Retrofit.Builder builder = new Retrofit.Builder();
+//        builder.baseUrl(url);//设置baseUrl
+//        builder.addConverterFactory(GsonConverterFactory.create());//添加解析 Gson，最终实现自定义
+//        builder.addCallAdapterFactory(RxJava2CallAdapterFactory.create());
+//
+//        Retrofit retrofit  = builder.build();
+//
+//        TestService service = retrofit.create(TestService.class);
+//
+//        service.getRxjava(0).subscribeOn(Schedulers.io())
+////                .observeOn()
+//                .subscribe(new io.reactivex.Observer<Object>() {
+//                    @Override
+//                    public void onSubscribe(Disposable d) {
+//                        System.out.println("onSubscribe");
+//                    }
+//                    @Override
+//                    public void onNext(Object o) {
+//                        System.out.println("onNext");
+//                        System.out.println(o.toString());
+//                    }
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        System.out.println("onError");
+//                    }
+//
+//                    @Override
+//                    public void onComplete() {
+//                        System.out.println("onComplete");
+//                    }
+//                });
+//    }
 
-    private void rxjavaTest(){
 
-        String url = "https://zm.gaiay.net.cn/";
+    private void testRxjava(){
+        String url ="http://api.laifudao.com/open/";
         Retrofit.Builder builder = new Retrofit.Builder();
-        builder.baseUrl(url);//设置baseUrl
-        builder.addConverterFactory(GsonConverterFactory.create());//添加解析 Gson，最终实现自定义
+        builder.baseUrl(url);
+        builder.addConverterFactory(GsonConverterFactory.create());
         builder.addCallAdapterFactory(RxJava2CallAdapterFactory.create());
-
-        Retrofit retrofit  = builder.build();
-
+        Retrofit retrofit = builder.build();
         TestService service = retrofit.create(TestService.class);
-
-        service.getRxjava(0).subscribeOn(Schedulers.io())
-//                .observeOn()
-                .subscribe(new Observer<Object>() {
+        service.getData()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<Book>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
-                        System.out.println("onSubscribe");
+
                     }
+
                     @Override
-                    public void onNext(Object o) {
-                        System.out.println("onNext");
-                        System.out.println(o.toString());
+                    public void onNext(List<Book> books) {
+                        for (int i = 0; i < books.size(); i++) {
+                            System.out.println("book = "+books.get(i).getTitle());
+                        }
                     }
+
                     @Override
                     public void onError(Throwable e) {
-                        System.out.println("onError");
+
                     }
 
                     @Override
                     public void onComplete() {
-                        System.out.println("onComplete");
+
                     }
                 });
-    }
 
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Consumer<List<Book>>() {
+//                    @Override
+//                    public void accept(List<Book> books) throws Exception {
+//                        for (int i = 0; i < books.size(); i++) {
+//                            System.out.println("book = "+books.get(i).getTitle());
+//                        }
+//                    }
+//                });
+
+
+    }
 }

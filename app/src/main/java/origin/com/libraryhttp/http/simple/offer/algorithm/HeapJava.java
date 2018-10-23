@@ -1,4 +1,4 @@
-package origin.com.libraryhttp.http.simple.algorithm;
+package origin.com.libraryhttp.http.simple.offer.algorithm;
 
 /**
  * 堆
@@ -24,11 +24,6 @@ public class HeapJava {
 
     }
 
-    public class A{
-        private void atest(){
-            test.equals("华华");
-        }
-    }
     /**
      * 节点数以 1开始：                                                         1
      * 左节点：2i ；右节点 2i+1;                                             2      3
