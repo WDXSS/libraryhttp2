@@ -11,8 +11,10 @@ public class AlgorithmJava {
     public static void main(String[] args) {
         AlgorithmJava algorithmJava = new AlgorithmJava();
 //        algorithmJava.bubbleSort();
-        algorithmJava.bubbleSortB();
+//        algorithmJava.bubbleSortB();
 //        algorithmJava.quickSort(0, quickSortA.length - 1);
+//        algorithmJava.quickSortTest(0, quickSortA.length - 1);
+        algorithmJava.insertSort();
     }
 
     /**
@@ -142,6 +144,37 @@ public class AlgorithmJava {
         }
     }
 
+    int insertA[] = {3, 2, 1, 5, 5, 3, 6};
+
+    /**
+     * 插入排序 原地，稳定排序
+     * 1.元素移动过位置 j--j+1
+     * 2.temp 插入到合适位置
+     * 3.注意内循环的终止条件
+     */
+    private void insertSort() {
+        int i, j;
+        for (i = 1; i < insertA.length; i++) {
+            int temp = insertA[i];
+            System.out.println("要插入的数据 " + temp);
+            for (j = i - 1; j >= 0; j--) {
+                //if (insertA[j] > temp) 从小到大
+                //if (insertA[j] < temp) 从大到小
+                if (insertA[j] > temp) {//认为 0到j是有序的，如果temp<[j]---[j]移动位置到j+1
+                    insertA[j + 1] = insertA[j];
+                } else {
+                    break;//一定要有break，内循环的终止条件是 j>=0,将会循环到j=0
+                }
+            }
+            /**
+             * 插入temp
+             */
+            insertA[j + 1] = temp;
+            printInsertA("第" + i + "ci -");
+        }
+
+
+    }
 
     /**
      * 队列 博客介绍：http://blog.51cto.com/ahalei/1371613 <br/>
@@ -160,5 +193,13 @@ public class AlgorithmJava {
         for (int i = 0; i < bubbleA.length; i++) {
             System.out.print(bubbleA[i] + ",");
         }
+    }
+
+    private void printInsertA(String name) {
+        System.out.println(name + "--" + "");
+        for (int i = 0; i < insertA.length; i++) {
+            System.out.print(insertA[i] + ",");
+        }
+        System.out.println();
     }
 }
