@@ -1,12 +1,21 @@
 package origin.com.libraryhttp.http.simple.offer.algorithm;
 
+import java.util.Arrays;
+
 /**
  * 算法学习
+ * 1.冒泡
+ * 2.快速
+ * 3.插入排序
+ * 4.归并排序
  * Created by zc on 2018/10/8
  */
 public class AlgorithmJava {
     private int[] bubbleA = {99, 54, 1, 3, 58, 46, 8, 61, 9, 2};
     private static int[] quickSortA = {9, 54, 1, 3, 58, 46, 8, 61, 9, 2};
+    private int insertA[] = {3, 2, 1, 5, 5, 3, 6};
+    private int mergeA[] = {4,3,2,8,7,6};
+    private int mergeTemp[] = new int[mergeA.length];//归并排序中过渡数组
 
     public static void main(String[] args) {
         AlgorithmJava algorithmJava = new AlgorithmJava();
@@ -14,7 +23,11 @@ public class AlgorithmJava {
 //        algorithmJava.bubbleSortB();
 //        algorithmJava.quickSort(0, quickSortA.length - 1);
 //        algorithmJava.quickSortTest(0, quickSortA.length - 1);
-        algorithmJava.insertSort();
+//        algorithmJava.insertSort();
+
+        algorithmJava.mergeSort(0, algorithmJava.mergeA.length -1);
+        //合并两个数组
+//        algorithmJava.mergeArray();
     }
 
     /**
@@ -79,6 +92,7 @@ public class AlgorithmJava {
     /**
      * 测试步骤1.和2.交换位置出现的问题
      * 复位时会出现，找到的数值比 temp大
+     *
      * @param left
      * @param right
      */
@@ -144,10 +158,10 @@ public class AlgorithmJava {
         }
     }
 
-    int insertA[] = {3, 2, 1, 5, 5, 3, 6};
 
     /**
      * 插入排序 原地，稳定排序
+     * <p>
      * 1.元素移动过位置 j--j+1
      * 2.temp 插入到合适位置
      * 3.注意内循环的终止条件
@@ -173,6 +187,124 @@ public class AlgorithmJava {
             printInsertA("第" + i + "ci -");
         }
 
+
+    }
+
+
+    /**
+     * 归并排序（Merge sort）
+     * 1.拆分，以数组长度的中间值，即 mid = （left + right）/ 2
+     * 2.合并{@link #merge(int, int, int)}
+     * 3.讲temp中的数据复制到a[]中，这里注意点：不是将所有的数据都排好序，然后放入a[]
+     * 4. mergeSort 是递归会将left 和 right的值从大到小一层一层的剥离，
+     *   而merge()方法会因为 mergeSort的递归 left和right的值从小到大，一层一层的增加
+     */
+    private void mergeSort(int left, int right) {
+        System.out.println("left = [" + left + "], right = [" + right + "]");
+        if (left >= right) {
+            return;
+        }
+        int mid = (left + right) / 2;
+        System.out.println("mid = " + mid);
+        System.out.println("mergeA = "+ Arrays.toString(mergeA));
+        System.out.println("mergeTemp = "+ Arrays.toString(mergeTemp));
+
+        mergeSort(left, mid);
+        mergeSort(mid + 1, right);
+
+        merge(left, right, mid);
+
+    }
+
+    private void merge(int left, int right, int mid) {
+//        System.out.println("merge -- left = " + left + ", right = " + right + ",mid = " + mid);
+        int i = left;//第一个数组的开始位置，mid结束位置
+        int m = mid + 1;//第二个数组中的开始位置
+        int j = right;//第二个数组的结束位置
+        int tempI = 0;
+        //拆分成 i--mid和 m -- j；的两数组
+        //将两个数组中数据存入到temp中
+        System.out.println("merge ---left = [" + left + "], right = [" + right + "], mid = [" + mid + "]");
+        while (i <= mid && m <= j) {
+
+            if (mergeA[i] < mergeA[m]) {
+                mergeTemp[tempI++] = mergeA[i++];
+            } else {
+                mergeTemp[tempI++] = mergeA[m++];
+            }
+            //打印temp中的数据
+//            printC(mergeTemp);
+        }
+        while (i <= mid) {
+            mergeTemp[tempI++] = mergeA[i++];
+        }
+        while (m <= j) {
+            mergeTemp[tempI++] = mergeA[m++];
+        }
+        System.out.println("merge --- temp = "+ Arrays.toString(mergeTemp));
+        tempI = 0;
+        //将temp中的元素拷贝到原数组中
+        while(left <= right){
+            System.out.println("while before merge -- arr = "+ Arrays.toString(mergeA));
+            System.out.println("while before merge -- temp = "+ Arrays.toString(mergeTemp));
+            mergeA[left++] = mergeTemp[tempI++];
+            System.out.println("while after merge -- arr = "+ Arrays.toString(mergeA));
+            System.out.println("while after merge -- temp = "+ Arrays.toString(mergeTemp));
+        }
+    }
+
+
+    /**
+     * 两个有序数组合并成一个数组
+     * 注意是有序的数组
+     */
+    private void mergeArray() {
+        int a[] = {1, 3, 5};
+        int b[] = {2, 4, 6, 8, 10};
+        int c[] = new int[a.length + b.length];
+        printC(c);
+        int ai = 0;
+        int bi = 0;
+        int ci = 0;
+
+        while (ai < a.length && bi <= b.length) {
+            int at = a[ai];
+            int bt = b[bi];
+            if (at < bt) {
+                c[ci] = a[ai];
+                ai++;
+            } else {
+                c[ci] = b[bi];
+                bi++;
+            }
+            ci++;
+            System.out.println("bi = " + bi + ", ai = " + ai);
+            printC(c);
+        }
+        //讲a[] 或者B数组中剩余的数据取出放入到 c[]中
+        System.out.println("将数组a或者数组B 中剩余的数据放入到 数组C中");
+        while (ai < a.length) {
+            c[ci] = a[ai];
+            ai++;
+            ci++;
+            //c[ci] = a[ai];ai++;  ci++;简单写法 c[ci ++]= a[ai ++]
+            printC(c);
+        }
+        while (bi < b.length) {
+            c[ci] = b[bi];
+            bi++;
+            ci++;
+            printC(c);
+        }
+    }
+
+    private void printC(int c[]) {
+        System.out.print("temp -- ");
+        for (int i = 0; i < c.length; i++) {
+            System.out.print(c[i] + ",");
+        }
+
+        System.out.println();
 
     }
 
