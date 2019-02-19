@@ -186,8 +186,6 @@ public class AlgorithmJava {
             insertA[j + 1] = temp;
             printInsertA("第" + i + "ci -");
         }
-
-
     }
 
 
@@ -216,6 +214,9 @@ public class AlgorithmJava {
 
     }
 
+    /**
+     * 合并，left，right，mid 会随着递归，一层层增大
+     */
     private void merge(int left, int right, int mid) {
 //        System.out.println("merge -- left = " + left + ", right = " + right + ",mid = " + mid);
         int i = left;//第一个数组的开始位置，mid结束位置
@@ -223,17 +224,14 @@ public class AlgorithmJava {
         int j = right;//第二个数组的结束位置
         int tempI = 0;
         //拆分成 i--mid和 m -- j；的两数组
-        //将两个数组中数据存入到temp中
+        //比较两数组的大小，将两个数组中数据存入到temp中
         System.out.println("merge ---left = [" + left + "], right = [" + right + "], mid = [" + mid + "]");
         while (i <= mid && m <= j) {
-
             if (mergeA[i] < mergeA[m]) {
                 mergeTemp[tempI++] = mergeA[i++];
             } else {
                 mergeTemp[tempI++] = mergeA[m++];
             }
-            //打印temp中的数据
-//            printC(mergeTemp);
         }
         while (i <= mid) {
             mergeTemp[tempI++] = mergeA[i++];
@@ -262,7 +260,9 @@ public class AlgorithmJava {
         int a[] = {1, 3, 5};
         int b[] = {2, 4, 6, 8, 10};
         int c[] = new int[a.length + b.length];
+        System.out.println(Arrays.toString(c));
         printC(c);
+        System.out.println(Arrays.toString(c));
         int ai = 0;
         int bi = 0;
         int ci = 0;
