@@ -1,4 +1,4 @@
-package origin.com.libraryhttp.http.simple.offer.annotation.example;
+package origin.com.libraryhttp.http.simple.offer.annotation.example.annota;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

@@ -1,5 +1,9 @@
 package origin.com.libraryhttp.http.simple.offer.annotation.example;
 
+import origin.com.libraryhttp.http.simple.offer.annotation.example.annota.FruitColor;
+import origin.com.libraryhttp.http.simple.offer.annotation.example.annota.FruitName;
+import origin.com.libraryhttp.http.simple.offer.annotation.example.annota.FruitProvider;
+
 /**
  * 注解使用
  */

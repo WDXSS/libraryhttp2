@@ -9,6 +9,6 @@ package origin.com.libraryhttp.http.simple.offer.designModel.proxy.dynamic;
  * Created by zc on 2018/10/11
  */
 public class DynamicProxy {
-    //
+    //https://blog.csdn.net/wsw_123/article/details/81221446
 //    InvocationHandler
 }
