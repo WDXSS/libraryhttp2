@@ -1,9 +1,10 @@
 package origin.com.libraryhttp;
 
-import android.graphics.Canvas;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
 
+import com.example.annotations.BindView;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.util.List;
@@ -19,6 +20,8 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class MainActivity extends AppCompatActivity {
+    @BindView(R.id.text)
+    private TextView textviewName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,8 +30,9 @@ public class MainActivity extends AppCompatActivity {
         testRxjava();
 
     }
-    private void testRxjava(){
-        String url ="http://api.laifudao.com/open/";
+
+    private void testRxjava() {
+        String url = "http://api.laifudao.com/open/";
         Retrofit.Builder builder = new Retrofit.Builder();
         builder.baseUrl(url);
         builder.addConverterFactory(GsonConverterFactory.create());
@@ -38,18 +42,18 @@ public class MainActivity extends AppCompatActivity {
 
         //此时 retrofit.create()中的serviceMethod.adapt为 RxJava2CallAdapter，
         RetrofitTest.TestService service = retrofit.create(RetrofitTest.TestService.class);
-        System.out.println("service = "+ service.getClass().getSimpleName());
+        System.out.println("service = " + service.getClass().getSimpleName());
         //observable 为BodyObservable ; RxJava2CallAdapter 中adapt() 返回 BodyObservable，在CallObservable(call),call 实现调用 call.execute();
         Observable<List<RetrofitTest.Book>> observable = service.getData();
-        System.out.println("observable = "+ observable.getClass().getSimpleName());
+        System.out.println("observable = " + observable.getClass().getSimpleName());
 
         observable.subscribeOn(Schedulers.io())
                 .doOnNext(new Consumer<List<RetrofitTest.Book>>() {
                     @Override
                     public void accept(List<RetrofitTest.Book> books) throws Exception {
-                        System.out.println("thread = "+ Thread.currentThread().getName());
+                        System.out.println("thread = " + Thread.currentThread().getName());
                         for (int i = 0; i < books.size(); i++) {
-                            System.out.println("do next = book = "+books.get(i).getTitle());
+                            System.out.println("do next = book = " + books.get(i).getTitle());
                         }
                     }
                 })
@@ -62,9 +66,9 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onNext(List<RetrofitTest.Book> books) {
-                        System.out.println("onNext thread  = "+ Thread.currentThread().getName());
+                        System.out.println("onNext thread  = " + Thread.currentThread().getName());
                         for (int i = 0; i < books.size(); i++) {
-                            System.out.println("book = "+books.get(i).getTitle());
+                            System.out.println("book = " + books.get(i).getTitle());
                         }
                     }
 
@@ -80,6 +84,6 @@ public class MainActivity extends AppCompatActivity {
                 });
 
 
-            getContentResolver();
+        getContentResolver();
     }
 }
