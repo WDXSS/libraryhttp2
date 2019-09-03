@@ -7,11 +7,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.List;
 
-import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -19,11 +17,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.Path;
 
 /**
  * retrofit 学习，最基础的<br/>
@@ -131,28 +124,6 @@ public class RetrofitTest {
 
             }
         });
-    }
-    public interface TestService {
-        @FormUrlEncoded
-        @POST("/api/zm/w/account/postLogin")
-        Call<User> postLogin(@Field("username") String name, @Field("password") String password);
-
-        @FormUrlEncoded
-        @POST("/api/zm/w/account/postLogin")
-        Call<ResponseBody> postLoginJson(@Field("username") String name, @Field("password") String password);
-
-        @GET("http://www.wanandroid.com/article/list/{page}/json")
-        //测试占位符 {page}当做占位符，而实际运行中会通过@PATH("page")所标注的参数进行替换
-        Call<ResponseBody> getPlaceholder(@Path("page") int page);
-
-
-
-        @GET("http://www.wanandroid.com/article/list/{page}/json")
-            //测试占位符 {page}当做占位符，而实际运行中会通过@PATH("page")所标注的参数进行替换
-        Observable<Object> getRxjava(@Path("page") int page);
-
-        @GET("xiaohua.json")
-        Observable<List<Book>> getData();
     }
 
 

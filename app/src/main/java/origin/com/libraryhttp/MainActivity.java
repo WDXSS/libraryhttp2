@@ -16,6 +16,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 import origin.com.libraryhttp.http.simple.retrofit.RetrofitTest;
+import origin.com.libraryhttp.http.simple.retrofit.TestService;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -41,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
         Retrofit retrofit = builder.build();
 
         //此时 retrofit.create()中的serviceMethod.adapt为 RxJava2CallAdapter，
-        RetrofitTest.TestService service = retrofit.create(RetrofitTest.TestService.class);
+        TestService service = retrofit.create(TestService.class);
         System.out.println("service = " + service.getClass().getSimpleName());
         //observable 为BodyObservable ; RxJava2CallAdapter 中adapt() 返回 BodyObservable，在CallObservable(call),call 实现调用 call.execute();
         Observable<List<RetrofitTest.Book>> observable = service.getData();
